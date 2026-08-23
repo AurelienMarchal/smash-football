@@ -1,0 +1,43 @@
+[gd_scene format=3 uid="uid://crr21hhkvcxjd"]
+
+[ext_resource type="Script" uid="uid://c8oab6lpgdua5" path="res://Scripts/Game/Player.cs" id="1_rpqav"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bbgfi"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_dyj7g"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_bbgfi"]
+height = 0.7
+radius = 1.0
+
+[node name="Player" type="CharacterBody3D" unique_id=1498653325]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+collision_layer = 2
+collision_mask = 7
+script = ExtResource("1_rpqav")
+controlledByInput = true
+walkingSpeed = 500.0
+passShootPower = 8.0
+controlledBallDistanceToCenter = 0.5
+controlledBallY = 0.5
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1097291754]
+shape = SubResource("CapsuleShape3D_bbgfi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1186363937]
+mesh = SubResource("CapsuleMesh_dyj7g")
+
+[node name="BallDetectionArea" type="Area3D" parent="." unique_id=1051646579]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="BallDetectionArea" unique_id=1039619368]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.64019775, 0)
+shape = SubResource("CylinderShape3D_bbgfi")
+
+[node name="TimerBeforeAbleToControlBall" type="Timer" parent="." unique_id=566171083]
+wait_time = 0.3
+one_shot = true
+
+[connection signal="body_entered" from="BallDetectionArea" to="." method="OnBallDetectionAreaBodyEntered"]
+[connection signal="timeout" from="TimerBeforeAbleToControlBall" to="." method="OnTimerBeforeAbleToControlBallTimeout"]
