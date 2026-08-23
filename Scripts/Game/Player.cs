@@ -56,10 +56,11 @@ public partial class Player : CharacterBody3D
         if (controlledByInput)
         {
             Vector2 inputVector = Input.GetVector(
-                "MovePlayerDown", 
-                "MovePlayerUp", 
+                
                 "MovePlayerLeft", 
-                "MovePlayerRight"
+                "MovePlayerRight",
+                "MovePlayerDown", 
+                "MovePlayerUp"
             );
             if (inputVector != Vector2.Zero)
             {
@@ -72,9 +73,9 @@ public partial class Player : CharacterBody3D
                 );
 
                 Velocity = new Vector3(
-                    walkingSpeed * inputVectorNormalized.X * (float)delta,
+                    walkingSpeed * inputVectorNormalized.Y * (float)delta,
                     0f,
-                    walkingSpeed * inputVectorNormalized.Y* (float)delta
+                    walkingSpeed * inputVectorNormalized.X * (float)delta
                 );
             }
             else
@@ -94,6 +95,11 @@ public partial class Player : CharacterBody3D
 
     public override void _Input(InputEvent @event)
     {
+
+        if (!controlledByInput)
+        {
+            return;
+        }
        
         if (@event.IsActionPressed("MakePass"))
         {
@@ -142,9 +148,9 @@ public partial class Player : CharacterBody3D
                 GlobalPosition.Z
             ) + 
             new Vector3(
-                controlledBallDistanceToCenter * Mathf.Cos(GlobalRotation.Y), 
+                controlledBallDistanceToCenter * Mathf.Sin(GlobalRotation.Y), 
                 0f, 
-                controlledBallDistanceToCenter * Mathf.Sin(GlobalRotation.Y)
+                controlledBallDistanceToCenter * Mathf.Cos(GlobalRotation.Y)
             );
     }
 
@@ -161,9 +167,9 @@ public partial class Player : CharacterBody3D
         }
 
         var impulse = new Vector3(
-            power * Mathf.Cos(GlobalRotation.Y), 
+            power * Mathf.Sin(GlobalRotation.Y), 
             0f, 
-            power * Mathf.Sin(GlobalRotation.Y)
+            power * Mathf.Cos(GlobalRotation.Y)
         );
 
         GD.Print($"Shooting with impulse {impulse}");

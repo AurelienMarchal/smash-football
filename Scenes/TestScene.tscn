@@ -157,6 +157,7 @@ size = Vector3(6, 16, 0.05)
 size = Vector3(6, 16, 0.05)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bbgfi"]
+radius = 0.25
 
 [node name="TestScene" type="Node3D" unique_id=2039037555]
 
@@ -311,11 +312,11 @@ shape = SubResource("BoxShape3D_iufkg")
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10, 10, 0)
 shape = SubResource("BoxShape3D_0f5h7")
 
-[node name="Wall_8_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=357616065]
+[node name="Wall_8_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=1224883674]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 12, 20)
 shape = SubResource("BoxShape3D_qsjrb")
 
-[node name="Wall_26_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=35783708]
+[node name="Wall_26_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=267563627]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -20)
 shape = SubResource("BoxShape3D_c264a")
 
@@ -330,11 +331,11 @@ script = ExtResource("2_5lt6y")
 shape = SubResource("SphereShape3D_bbgfi")
 
 [node name="soccer_ball" parent="Ball" unique_id=1977536467 instance=ExtResource("3_iufkg")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
 [node name="Player0" parent="." unique_id=1498653325 instance=ExtResource("3_8k7wh")]
 
 [node name="Player1" parent="." unique_id=46902860 instance=ExtResource("3_8k7wh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 10)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
 controlledByInput = false
 playerNum = 1
