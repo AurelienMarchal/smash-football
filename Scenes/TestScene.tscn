@@ -3,8 +3,9 @@
 [ext_resource type="Script" uid="uid://bmp0k10kuyao3" path="res://Scripts/Tools/GenerateField.cs" id="1_b5ayd"]
 [ext_resource type="Script" uid="uid://15x8f2gvxhcq" path="res://Scripts/Game/Ball.cs" id="2_5lt6y"]
 [ext_resource type="PackedScene" uid="uid://crr21hhkvcxjd" path="res://Scenes/Player.tscn" id="3_8k7wh"]
+[ext_resource type="PackedScene" uid="uid://c0lx1c0ego1at" path="res://Models/soccer_ball.fbx" id="3_iufkg"]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_8k7wh"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_iufkg"]
 _surfaces = [{
 "aabb": AABB(-10, 0, -20, 20, 1e-05, 40),
 "attribute_data": PackedByteArray("AAAAPwAAAD8AAIA/zcxsPx1Dfz+2i3A/tRN9P8QldD9Hh3k/ind3P77AdD9fYHo/FO9uP6TDfD+IS2g/2ol+P2oXYT+OoX8/mplZPwAAgD+amRk+AACAP6xE9z2OoX8/wKO9PdqJfj9gh4g9pMN8Pxj0Mz1fYHo/ABfPPIp3dz/AEjs8xCV0PwDjPDu1i3A/AAAAAM3MbD8AAAAAmJmZPQDjPDuoRHc9wBI7PMCjPT0gF888aIcIPSj0Mz0g9LM8aIeIPQAXTzzAo709wBK7O7RE9z0A47w6mpkZPgAAAACamVk/AAAAAGsXYT8A47w6iEtoP8ASuzsT724/ABdPPL7AdD8g9LM8R4d5P2iHCD21E30/wKM9PR1Dfz+wRHc9AACAP5iZmT0="),
@@ -17,7 +18,7 @@ _surfaces = [{
 "vertex_data": PackedByteArray("AAAAAAAAAAAAAAAAAAAgQQAAAAAAAIhB5BMfQQAAAACjroxBolgcQQAAAAA1L5FBGekXQQAAAABsVZVB7vARQQAAAAB3+JhB2aoKQQAAAACN9JtBal4CQQAAAABRLJ5BirryQAAAAADyiZ9BAADgQAAAAAAAAKBBAADgwAAAAAAAAKBBirrywAAAAADyiZ9Bal4CwQAAAABRLJ5B2aoKwQAAAACN9JtB7vARwQAAAAB3+JhBGukXwQAAAABsVZVBolgcwQAAAAA1L5FB5BMfwQAAAACiroxBAAAgwQAAAAAAAIhBAAAgwQAAAAAAAIjB5BMfwQAAAACjrozBolgcwQAAAAA1L5HBGekXwQAAAABsVZXB7fARwQAAAAB3+JjB2KoKwQAAAACN9JvBal4CwQAAAABRLJ7BiLrywAAAAADyiZ/BAADgwAAAAAAAAKDBAADgQAAAAAAAAKDBi7ryQAAAAADyiZ/Bal4CQQAAAABRLJ7B2KoKQQAAAACN9JvB7vARQQAAAAB3+JjBGekXQQAAAABsVZXBolgcQQAAAAA1L5HB5BMfQQAAAACirozBAAAgQQAAAAAAAIjB/3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/7//f///AAD/v/9///8AAP+//3///wAA/78=")
 }]
 
-[sub_resource type="ArrayMesh" id="ArrayMesh_iufkg"]
+[sub_resource type="ArrayMesh" id="ArrayMesh_0f5h7"]
 _surfaces = [{
 "aabb": AABB(-10, 0, -20, 20, 10, 40),
 "attribute_data": PackedByteArray("AAAAAAAAAAAAAAAAAACAP2TWpzsAAAAAZNanOwAAgD9k1qc7AAAAAGTWpzsAAIA/VdYnPAAAAABV1ic8AACAP1XWJzwAAAAAVdYnPAAAgD97wXs8AAAAAHvBezwAAIA/e8F7PAAAAAB7wXs8AACAP1XWpzwAAAAAVdanPAAAgD9V1qc8AAAAAFXWpzwAAIA/7MvRPAAAAADsy9E8AACAP+zL0TwAAAAA7MvRPAAAgD+Bwfs8AAAAAIHB+zwAAIA/gcH7PAAAAACBwfs8AACAP4vbEj0AAAAAi9sSPQAAgD+L2xI9AAAAAIvbEj0AAIA/VtYnPQAAAABW1ic9AACAP1bWJz0AAAAAVtYnPQAAgD/4Q5s9AAAAAPhDmz0AAIA/+EObPc3MzD74Q5s9AACAP5ckAz7NzMw+lyQDPgAAgD+XJAM+AAAAAJckAz4AAIA//tAmPgAAAAD+0CY+AACAP/7QJj4AAAAA/tAmPgAAgD+wDyw+AAAAALAPLD4AAIA/sA8sPgAAAACwDyw+AACAP2JOMT4AAAAAYk4xPgAAgD9iTjE+AAAAAGJOMT4AAIA/FY02PgAAAAAVjTY+AACAPxWNNj4AAAAAFY02PgAAgD/Hyzs+AAAAAMfLOz4AAIA/x8s7PgAAAADHyzs+AACAP3oKQT4AAAAAegpBPgAAgD96CkE+AAAAAHoKQT4AAIA/LUlGPgAAAAAtSUY+AACAPy1JRj4AAAAALUlGPgAAgD/gh0s+AAAAAOCHSz4AAIA/4IdLPgAAAADgh0s+AACAP5PGUD4AAAAAk8ZQPgAAgD+TxlA+AAAAAJPGUD4AAIA/////PgAAAAD///8+AACAP////z4AAAAA////PgAAgD+sTwE/AAAAAKxPAT8AAIA/rE8BPwAAAACsTwE/AACAP1mfAj8AAAAAWZ8CPwAAgD9ZnwI/AAAAAFmfAj8AAIA/Be8DPwAAAAAF7wM/AACAPwXvAz8AAAAABe8DPwAAgD+yPgU/AAAAALI+BT8AAIA/sj4FPwAAAACyPgU/AACAP1+OBj8AAAAAX44GPwAAgD9fjgY/AAAAAF+OBj8AAIA/C94HPwAAAAAL3gc/AACAPwveBz8AAAAAC94HPwAAgD+4LQk/AAAAALgtCT8AAIA/uC0JPwAAAAC4LQk/AACAP2R9Cj8AAAAAZH0KPwAAgD9kfQo/AAAAAGR9Cj8AAIA/fmgTPwAAAAB+aBM/AACAP35oEz/NzMw+fmgTPwAAgD8lySA/zczMPiXJID8AAIA/JckgPwAAAAAlySA/AACAPz60KT8AAAAAPrQpPwAAgD8+tCk/AAAAAD60KT8AAIA/6wMrPwAAAADrAys/AACAP+sDKz8AAAAA6wMrPwAAgD+YUyw/AAAAAJhTLD8AAIA/mFMsPwAAAACYUyw/AACAP0WjLT8AAAAARaMtPwAAgD9Foy0/AAAAAEWjLT8AAIA/8vIuPwAAAADy8i4/AACAP/LyLj8AAAAA8vIuPwAAgD+fQjA/AAAAAJ9CMD8AAIA/n0IwPwAAAACfQjA/AACAP0uSMT8AAAAAS5IxPwAAgD9LkjE/AAAAAEuSMT8AAIA/+OEyPwAAAAD44TI/AACAP/jhMj8AAAAA+OEyPwAAgD+lMTQ/AAAAAKUxND8AAIA/pTE0PwAAAAClMTQ/AACAPwAAgD8AAAAAAACAPwAAgD8="),
@@ -157,12 +158,10 @@ size = Vector3(6, 16, 0.05)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_bbgfi"]
 
-[sub_resource type="SphereMesh" id="SphereMesh_bbgfi"]
-
 [node name="TestScene" type="Node3D" unique_id=2039037555]
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=818357593]
-transform = Transform3D(-3.789546e-08, 0.4984001, -0.8669471, 2.1785763e-08, 0.8669471, 0.4984001, 1, -3.552714e-15, -4.3711385e-08, -21.394041, 16.86973, 0)
+transform = Transform3D(-3.789546e-08, 0.49840012, -0.8669472, 2.1785763e-08, 0.8669472, 0.49840012, 1, -3.5527137e-15, -4.3711392e-08, -16.388653, 12.950657, 0)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=569246596]
 transform = Transform3D(1, 0, 0, 0, -0.7071067, 0.7071068, 0, -0.7071068, -0.7071067, 0, 30.77924, 0)
@@ -178,10 +177,10 @@ HoleHeight = 4.0
 ColliderWallHeight = 20.0
 
 [node name="Floor" type="MeshInstance3D" parent="FieldGenerator" unique_id=1460056680]
-mesh = SubResource("ArrayMesh_8k7wh")
+mesh = SubResource("ArrayMesh_iufkg")
 
 [node name="Walls" type="MeshInstance3D" parent="FieldGenerator" unique_id=1006444485]
-mesh = SubResource("ArrayMesh_iufkg")
+mesh = SubResource("ArrayMesh_0f5h7")
 
 [node name="Collisions" type="StaticBody3D" parent="FieldGenerator" unique_id=1561305576]
 collision_mask = 6
@@ -312,11 +311,11 @@ shape = SubResource("BoxShape3D_iufkg")
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 10, 10, 0)
 shape = SubResource("BoxShape3D_0f5h7")
 
-[node name="Wall_8_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=968117275]
+[node name="Wall_8_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=357616065]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 12, 20)
 shape = SubResource("BoxShape3D_qsjrb")
 
-[node name="Wall_26_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=1489085599]
+[node name="Wall_26_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=35783708]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -20)
 shape = SubResource("BoxShape3D_c264a")
 
@@ -330,8 +329,8 @@ script = ExtResource("2_5lt6y")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Ball" unique_id=1814630518]
 shape = SubResource("SphereShape3D_bbgfi")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ball" unique_id=484211327]
-mesh = SubResource("SphereMesh_bbgfi")
+[node name="soccer_ball" parent="Ball" unique_id=1977536467 instance=ExtResource("3_iufkg")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0, 0)
 
 [node name="Player0" parent="." unique_id=1498653325 instance=ExtResource("3_8k7wh")]
 
