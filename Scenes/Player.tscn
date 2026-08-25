@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://c8oab6lpgdua5" path="res://Scripts/Game/Player.cs" id="1_rpqav"]
 [ext_resource type="PackedScene" uid="uid://p1p2mdi2a1nd" path="res://Models/Mannequin Character/characters/Mannequin_Medium.fbx" id="2_kyqiw"]
+[ext_resource type="AnimationLibrary" uid="uid://d20w04xqttqoc" path="res://Animations/AnimationLibrary/JogAnimationLibrary.res" id="3_gntrk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bbgfi"]
 
@@ -30,21 +31,22 @@ shape = SubResource("CapsuleShape3D_bbgfi")
 [node name="GeneralSkeleton" parent="Mannequin_Medium/Rig_Medium" parent_id_path=PackedInt32Array(640355391, 1559455264) index="0" unique_id=1126854210]
 bones/1/position = Vector3(0.00047538945, 0.39603505, -0.0072693806)
 bones/1/rotation = Quaternion(0.08596811, -0.00906741, 0.032448955, 0.99572814)
-bones/2/rotation = Quaternion(0.07642123, 0.028760724, -0.016468257, 0.99652475)
+bones/2/rotation = Quaternion(0.07642123, 0.028760722, -0.016468257, 0.9965247)
 bones/3/rotation = Quaternion(0.014060257, 0.010666955, 0.007217803, 0.99981827)
 bones/6/rotation = Quaternion(0.15331048, 0.6680653, 0.030166447, 0.7275127)
-bones/10/rotation = Quaternion(0.07392104, -0.6107243, -0.10464968, 0.781409)
-bones/12/rotation = Quaternion(-0.13749653, -0.038760554, -0.03775909, 0.9890231)
+bones/10/rotation = Quaternion(0.073920995, -0.6107242, -0.10464969, 0.781409)
+bones/12/rotation = Quaternion(-0.13749653, -0.038760554, -0.03775909, 0.98902303)
 bones/13/rotation = Quaternion(0.0043101776, 0.23848584, 0.97061527, 0.031813644)
-bones/14/rotation = Quaternion(-0.03438903, 0.748197, -0.6614645, 0.038515225)
+bones/14/rotation = Quaternion(-0.034389026, 0.74819696, -0.66146445, 0.03851522)
 bones/15/rotation = Quaternion(-0.050945684, 0.6485825, -0.75661063, 0.065466076)
-bones/16/rotation = Quaternion(-6.585446e-09, 0.9987894, 0.049189903, -3.9512673e-09)
+bones/16/rotation = Quaternion(-6.5854464e-09, 0.9987895, 0.049189903, -3.9512673e-09)
 bones/17/rotation = Quaternion(-0.04412529, 0.0384905, 0.99828315, 0.0014789244)
 bones/18/rotation = Quaternion(0.016124118, 0.9732781, -0.21900645, 0.06712662)
 bones/19/rotation = Quaternion(-0.0077359406, 0.5913857, -0.80633193, 0.0056554186)
 bones/20/rotation = Quaternion(6.0377647e-06, 0.9958796, 0.08830503, 0.020644505)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="Mannequin_Medium" unique_id=1866679471]
+libraries/Jog = ExtResource("3_gntrk")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1186363937]
 visible = false
