@@ -4,6 +4,13 @@ using System;
 public partial class Player : CharacterBody3D
 {
 
+    [ExportGroup("General")]
+
+    
+
+    [Export]
+    private int playerNum;
+
     [Export]
     public bool controlledByInput;
 
@@ -19,12 +26,39 @@ public partial class Player : CharacterBody3D
     [Export]
     private float controlledBallY;
 
+    
+
+    [ExportGroup("Animation")]
     [Export]
-    private int playerNum;
+    private AnimationTree animationTree;
+
+    private AnimationNodeStateMachinePlayback stateMachinePlayback;
+
+    [ExportSubgroup("SlideTackle")]
+
+    [Export]
+    private Curve slideTackleMovementCurve;
+
+    [Export]
+    private float slideTackleDuration = 0.8f;
+
+    private float slideTackleTimer = 0f;
+
+    public PlayerState playerState
+    {
+        get;
+        private set;
+    }
 
     Timer timerBeforeAbleToControlBall;
 
+    [ExportGroup("CollidersAndAreas")]
+
+    [Export]
     Area3D ballDetectionArea;
+
+    [Export]
+    Area3D rightFootCollisionArea;
 
     public Ball controlledBall{
 		get;
@@ -34,13 +68,35 @@ public partial class Player : CharacterBody3D
     public override void _Ready()
 	{
 		controlledBall = null;
+        playerState = PlayerState.Moving;
+        stateMachinePlayback = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
         timerBeforeAbleToControlBall = GetNode<Timer>("./TimerBeforeAbleToControlBall");
-        ballDetectionArea = GetNode<Area3D>("./BallDetectionArea");
+        
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _PhysicsProcess(double delta)
 	{
+        switch (playerState)
+        {
+            case PlayerState.Moving:
+                HandleNormalMovement(delta);
+                break;
+
+            case PlayerState.ControllingBall:
+                HandleNormalMovement(delta);
+                break;
+
+            case PlayerState.SlideTackle:
+                HandleSlideTackle(delta);
+                break;
+        }
+
+	}
+
+    private void HandleNormalMovement(double delta)
+    {
+        //Must be state dependant
         if(controlledBall == null)
         {
             var overlappingBodies = ballDetectionArea.GetOverlappingBodies();
@@ -73,10 +129,11 @@ public partial class Player : CharacterBody3D
                 );
 
                 Velocity = new Vector3(
-                    walkingSpeed * inputVectorNormalized.Y * (float)delta,
+                    walkingSpeed * inputVectorNormalized.Y ,
                     0f,
-                    walkingSpeed * inputVectorNormalized.X * (float)delta
+                    walkingSpeed * inputVectorNormalized.X 
                 );
+                
             }
             else
             {
@@ -90,12 +147,48 @@ public partial class Player : CharacterBody3D
 
         MoveAndSlide();
         MoveControlledBall();
+    }
 
-	}
+    private void HandleSlideTackle(double delta)
+    {
+        
+        slideTackleTimer += (float)delta;
+
+        float progress = Mathf.Clamp(
+            slideTackleTimer / slideTackleDuration,
+            0f,
+            1f
+        );
+
+        float speed = slideTackleMovementCurve.Sample(progress);
+
+        Velocity = speed * Transform.Basis.Z;
+
+        MoveAndSlide();
+
+        var overlappingBodies = rightFootCollisionArea.GetOverlappingBodies();
+        foreach (var body in overlappingBodies)
+        {
+            if(body is Player otherPlayer && otherPlayer.playerNum != playerNum) 
+            {
+                if (otherPlayer.playerState == PlayerState.ControllingBall)
+                {
+                    GD.Print("Hit player " + otherPlayer.playerNum);
+                    var ball = otherPlayer.controlledBall;
+                    otherPlayer.LooseControlOfBall();
+                    otherPlayer.StartHitBySlideTackle();
+                    TryToGainControlOfBall(ball);
+                }
+            }
+        }
+
+        
+        MoveControlledBall();
+        
+    }
 
     public override void _Input(InputEvent @event)
     {
-
         if (!controlledByInput)
         {
             return;
@@ -104,19 +197,40 @@ public partial class Player : CharacterBody3D
         if (@event.IsActionPressed("MakePass"))
         {
             GD.Print("MakePass");
-            ShootControlledBall(passShootPower);
+            if(playerState == PlayerState.ControllingBall)
+            {
+                ShootControlledBall(passShootPower);
+            }
+            
+        }
+        if (@event.IsActionPressed("SlideTackle"))
+        {
+            if(playerState == PlayerState.Moving)
+            {
+                GD.Print("SlideTackle");
+                StartSlideTackle();
+            }
+            
         }
     }
 
-    public void TryToGainControlOfBall(Ball ball)
+    public bool TryToGainControlOfBall(Ball ball)
     {
+        if(ball == null)
+        {
+            return false;
+        }
+
         var didSucceed = ball.TryToBecomeControlledByPlayer(playerNum);
         if (didSucceed)
         {
-             controlledBall = ball;
+            controlledBall = ball;
             SetCollisionMaskValue(3/*Ball*/, false);
             ballDetectionArea.SetCollisionMaskValue(3/*Ball*/, false);
+            playerState = PlayerState.ControllingBall;
         }
+
+        return didSucceed;
        
     }
 
@@ -124,6 +238,7 @@ public partial class Player : CharacterBody3D
     {
         controlledBall.BecomeFree();
         controlledBall = null;
+        playerState = PlayerState.Moving;
         timerBeforeAbleToControlBall.Start();
     }
 
@@ -179,10 +294,58 @@ public partial class Player : CharacterBody3D
         timerBeforeAbleToControlBall.Start();
 
         controlledBall.ApplyCentralImpulse(impulse);
+
+        playerState = PlayerState.Moving;
         
         controlledBall = null;
         
     }
 
-    
+    private void StartSlideTackle()
+    {
+        playerState = PlayerState.SlideTackle;
+
+        stateMachinePlayback.Travel("Special_slide_tackle");
+
+        slideTackleTimer = 0f;
+    }
+
+
+    public void EndSlideTackle()
+    {
+        playerState = controlledBall == null ? PlayerState.Moving : PlayerState.ControllingBall;
+        Velocity = Vector3.Zero;
+    }
+
+    private void StartHitBySlideTackle()
+    {
+        playerState = PlayerState.HitBySlideTackle;
+
+        stateMachinePlayback.Travel("Hit_tackled");
+
+        SetCollisionMaskValue(2/*Player*/, false);
+        SetCollisionLayerValue(2 /*Player*/, false);
+    }
+
+    private void EndHitBySlideTackle()
+    {
+        SetCollisionMaskValue(2/*Player*/, true);
+        SetCollisionLayerValue(2 /*Player*/, true);
+        playerState = PlayerState.Moving;
+    }
+
+
+    public void OnAnimationTreeAnimationFinished(string animName)
+    {
+        GD.Print("Animation End " + animName);
+        switch (animName)
+        {
+            case "Special/slide_tackle" :
+                EndSlideTackle();
+                break;
+            case "Hit/tackled":
+                EndHitBySlideTackle();
+                break;
+        }
+    }
 }

@@ -1,59 +1,131 @@
 [gd_scene format=3 uid="uid://crr21hhkvcxjd"]
 
 [ext_resource type="Script" uid="uid://c8oab6lpgdua5" path="res://Scripts/Game/Player.cs" id="1_rpqav"]
+[ext_resource type="AnimationLibrary" uid="uid://5if7448bot52" path="res://Animations/AnimationLibrary/HitAnimationLibray.res" id="2_5ixxa"]
 [ext_resource type="PackedScene" uid="uid://p1p2mdi2a1nd" path="res://Models/Mannequin Character/characters/Mannequin_Medium.fbx" id="2_kyqiw"]
+[ext_resource type="AnimationLibrary" uid="uid://ch7gklo1gbhyi" path="res://Animations/AnimationLibrary/SpecialAnimationLibrary.res" id="3_dewec"]
 [ext_resource type="AnimationLibrary" uid="uid://d20w04xqttqoc" path="res://Animations/AnimationLibrary/JogAnimationLibrary.res" id="3_gntrk"]
+
+[sub_resource type="Curve" id="Curve_et12v"]
+_limits = [0.0, 5.0, 0.0, 1.0]
+_data = [Vector2(0, 5), 0.0, 0.0, 0, 0, Vector2(0.3316832, 5), 0.0, 0.0, 0, 0, Vector2(0.5676568, 0.012562752), 0.0, 0.0, 0, 0]
+point_count = 3
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bbgfi"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_dyj7g"]
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_nn08x"]
+animation = &"Hit/tackled"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dewec"]
+animation = &"Jog/jog_foreward"
+
+[sub_resource type="AnimationNodeBlendSpace1D" id="AnimationNodeBlendSpace1D_5ixxa"]
+min_space = 0.0
+blend_point_0/node = SubResource("AnimationNodeAnimation_dewec")
+blend_point_0/pos = 1.0
+blend_point_0/name = &"Jog_jog_foreward"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5ixxa"]
+animation = &"Special/slide_tackle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nn08x"]
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_52ee3"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bhhdu"]
+advance_mode = 0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_megsn"]
+advance_mode = 0
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_yoq75"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_dewec"]
+states/Hit_tackled/node = SubResource("AnimationNodeAnimation_nn08x")
+states/Hit_tackled/position = Vector2(402.66666, 212.66667)
+states/Locomotion/node = SubResource("AnimationNodeBlendSpace1D_5ixxa")
+states/Locomotion/position = Vector2(326, 99.55556)
+states/Special_slide_tackle/node = SubResource("AnimationNodeAnimation_5ixxa")
+states/Special_slide_tackle/position = Vector2(607.3334, 99.925934)
+states/Start/position = Vector2(93.333336, 100.37037)
+transitions = ["Start", "Locomotion", SubResource("AnimationNodeStateMachineTransition_nn08x"), "Special_slide_tackle", "Locomotion", SubResource("AnimationNodeStateMachineTransition_52ee3"), "Locomotion", "Special_slide_tackle", SubResource("AnimationNodeStateMachineTransition_bhhdu"), "Locomotion", "Hit_tackled", SubResource("AnimationNodeStateMachineTransition_megsn"), "Hit_tackled", "Locomotion", SubResource("AnimationNodeStateMachineTransition_yoq75")]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_bbgfi"]
+radius = 0.6
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_bbgfi"]
 height = 0.7
 radius = 1.0
 
-[node name="Player" type="CharacterBody3D" unique_id=1498653325]
+[node name="Player" type="CharacterBody3D" unique_id=1498653325 node_paths=PackedStringArray("animationTree", "ballDetectionArea", "rightFootCollisionArea")]
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_rpqav")
 controlledByInput = true
-walkingSpeed = 500.0
+walkingSpeed = 5.0
 passShootPower = 8.0
 controlledBallDistanceToCenter = 0.5
 controlledBallY = 0.25
+animationTree = NodePath("AnimationTree")
+slideTackleMovementCurve = SubResource("Curve_et12v")
+slideTackleDuration = 1.7
+ballDetectionArea = NodePath("BallDetectionArea")
+rightFootCollisionArea = NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/RightFootAttachment/RightFootCollisionArea")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1097291754]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
 shape = SubResource("CapsuleShape3D_bbgfi")
 
+[node name="AnimationTree" type="AnimationTree" parent="." unique_id=425571751]
+root_node = NodePath("../Mannequin_Medium")
+tree_root = SubResource("AnimationNodeStateMachine_dewec")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Locomotion/blend_position = 0.0
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1866679471]
+root_node = NodePath("../Mannequin_Medium")
+root_motion_track = NodePath("%GeneralSkeleton:Root")
+libraries/Hit = ExtResource("2_5ixxa")
+libraries/Jog = ExtResource("3_gntrk")
+libraries/Special = ExtResource("3_dewec")
+
 [node name="Mannequin_Medium" parent="." unique_id=640355391 instance=ExtResource("2_kyqiw")]
 
 [node name="GeneralSkeleton" parent="Mannequin_Medium/Rig_Medium" parent_id_path=PackedInt32Array(640355391, 1559455264) index="0" unique_id=1126854210]
-bones/1/position = Vector3(0.00047538945, 0.39603505, -0.0072693806)
-bones/1/rotation = Quaternion(0.08596811, -0.00906741, 0.032448955, 0.99572814)
-bones/2/rotation = Quaternion(0.07642123, 0.028760722, -0.016468257, 0.9965247)
-bones/3/rotation = Quaternion(0.014060257, 0.010666955, 0.007217803, 0.99981827)
-bones/6/rotation = Quaternion(0.15331048, 0.6680653, 0.030166447, 0.7275127)
-bones/10/rotation = Quaternion(0.073920995, -0.6107242, -0.10464969, 0.781409)
-bones/12/rotation = Quaternion(-0.13749653, -0.038760554, -0.03775909, 0.98902303)
-bones/13/rotation = Quaternion(0.0043101776, 0.23848584, 0.97061527, 0.031813644)
-bones/14/rotation = Quaternion(-0.034389026, 0.74819696, -0.66146445, 0.03851522)
-bones/15/rotation = Quaternion(-0.050945684, 0.6485825, -0.75661063, 0.065466076)
-bones/16/rotation = Quaternion(-6.5854464e-09, 0.9987895, 0.049189903, -3.9512673e-09)
-bones/17/rotation = Quaternion(-0.04412529, 0.0384905, 0.99828315, 0.0014789244)
-bones/18/rotation = Quaternion(0.016124118, 0.9732781, -0.21900645, 0.06712662)
-bones/19/rotation = Quaternion(-0.0077359406, 0.5913857, -0.80633193, 0.0056554186)
-bones/20/rotation = Quaternion(6.0377647e-06, 0.9958796, 0.08830503, 0.020644505)
+bones/1/rotation = Quaternion(0.006646774, 6.893759e-05, -0.0014283437, 0.9999769)
+bones/2/rotation = Quaternion(0.112275936, -0.0002511288, 0.003515603, 0.9936708)
+bones/3/rotation = Quaternion(0.03648332, 3.5680845e-05, 0.00080443226, 0.999334)
+bones/6/rotation = Quaternion(0.03560163, 0.651828, 0.01967287, 0.7572753)
+bones/10/rotation = Quaternion(0.010781911, -0.65477926, 0.015749427, 0.7555792)
+bones/12/rotation = Quaternion(0.059281338, -0.0012018348, -0.003157724, 0.9982357)
+bones/13/rotation = Quaternion(-0.055513598, 0.21376728, 0.9744985, -0.039681908)
+bones/14/rotation = Quaternion(0.10305892, 0.7589715, -0.64276874, 0.013774821)
+bones/15/rotation = Quaternion(0.028717814, 0.683143, -0.72969353, 0.0061926823)
+bones/16/rotation = Quaternion(0.023122355, 0.8919369, 0.45050266, -0.031005014)
+bones/17/rotation = Quaternion(-0.024316601, 0.058991928, 0.9977757, -0.019298755)
+bones/18/rotation = Quaternion(0.00077252707, 0.90033734, -0.4348029, -0.018399313)
+bones/19/rotation = Quaternion(-0.017781828, 0.429222, -0.90295523, -0.011146004)
+bones/20/rotation = Quaternion(2.3049061e-08, 0.9939055, 0.110235885, 3.292723e-09)
 
-[node name="AnimationPlayer" type="AnimationPlayer" parent="Mannequin_Medium" unique_id=1866679471]
-libraries/Jog = ExtResource("3_gntrk")
+[node name="RightFootAttachment" type="BoneAttachment3D" parent="Mannequin_Medium/Rig_Medium/GeneralSkeleton" index="6" unique_id=441868245]
+transform = Transform3D(-0.9935725, -0.112711966, -0.010438345, 0.0024541225, -0.113643885, 0.9935185, -0.11316768, 0.9871074, 0.113190114, -0.15158278, 0.21115586, -0.089816116)
+bone_name = "RightFoot"
+bone_idx = 19
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1186363937]
-visible = false
-mesh = SubResource("CapsuleMesh_dyj7g")
+[node name="RightFootCollisionArea" type="Area3D" parent="Mannequin_Medium/Rig_Medium/GeneralSkeleton/RightFootAttachment" unique_id=1845437005]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Mannequin_Medium/Rig_Medium/GeneralSkeleton/RightFootAttachment/RightFootCollisionArea" unique_id=335538293]
+shape = SubResource("SphereShape3D_bbgfi")
 
 [node name="BallDetectionArea" type="Area3D" parent="." unique_id=1051646579]
-collision_layer = 2
+collision_layer = 8
 collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="BallDetectionArea" unique_id=1039619368]
@@ -64,6 +136,7 @@ shape = SubResource("CylinderShape3D_bbgfi")
 wait_time = 0.3
 one_shot = true
 
+[connection signal="animation_finished" from="AnimationTree" to="." method="OnAnimationTreeAnimationFinished"]
 [connection signal="body_entered" from="BallDetectionArea" to="." method="OnBallDetectionAreaBodyEntered"]
 [connection signal="timeout" from="TimerBeforeAbleToControlBall" to="." method="OnTimerBeforeAbleToControlBallTimeout"]
 
