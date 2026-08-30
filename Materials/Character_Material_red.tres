@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://n3ly6i85fs30"]
+
+[ext_resource type="Texture2D" uid="uid://cmhes8bvs1e7m" path="res://Models/Mannequin Character/Textures/mannequin_texture_red.png" id="1_uutup"]
+
+[resource]
+resource_name = "Character_Material"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_uutup")
+emission_enabled = true

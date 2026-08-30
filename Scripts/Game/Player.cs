@@ -6,10 +6,14 @@ public partial class Player : CharacterBody3D
 
     [ExportGroup("General")]
 
-    
-
     [Export]
     private int playerNum;
+
+    [Export]
+    private int teamNum;
+
+    [Export]
+    private TeamColor teamColor;
 
     [Export]
     public bool controlledByInput;
@@ -26,7 +30,19 @@ public partial class Player : CharacterBody3D
     [Export]
     private float controlledBallY;
 
-    
+    [ExportGroup("Rendering")]
+    [Export]
+    MeshInstance3D[] bodyMeshes;
+
+    [ExportSubgroup("Materials")]
+    [Export]
+    Material blueMat;
+    [Export]
+    Material redMat;
+    [Export]
+    Material greenMat;
+    [Export]
+    Material yellowMat;
 
     [ExportGroup("Animation")]
     [Export]
@@ -71,7 +87,8 @@ public partial class Player : CharacterBody3D
         playerState = PlayerState.Moving;
         stateMachinePlayback = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
         timerBeforeAbleToControlBall = GetNode<Timer>("./TimerBeforeAbleToControlBall");
-        
+        SetMaterialAccordingToTeamColor();
+
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -93,6 +110,37 @@ public partial class Player : CharacterBody3D
         }
 
 	}
+
+    public void SetMaterialAccordingToTeamColor()
+    {
+        Material mat = null;
+        switch (teamColor)
+        {
+            case TeamColor.Blue :
+                mat = blueMat;
+                break;
+            case TeamColor.Red  :
+                mat = redMat;
+                break;
+            case TeamColor.Green  :
+                mat = greenMat;
+                break;
+            case TeamColor.Yellow:
+                mat = yellowMat;
+                break;
+        }
+
+        if(mat == null)
+        {
+            return;
+        }
+        foreach (MeshInstance3D mesh in bodyMeshes)
+        {
+            
+            mesh.SetSurfaceOverrideMaterial(0, mat);
+            
+        }
+    }
 
     private void HandleNormalMovement(double delta)
     {

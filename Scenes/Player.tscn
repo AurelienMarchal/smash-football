@@ -3,8 +3,12 @@
 [ext_resource type="Script" uid="uid://c8oab6lpgdua5" path="res://Scripts/Game/Player.cs" id="1_rpqav"]
 [ext_resource type="AnimationLibrary" uid="uid://5if7448bot52" path="res://Animations/AnimationLibrary/HitAnimationLibray.res" id="2_5ixxa"]
 [ext_resource type="PackedScene" uid="uid://p1p2mdi2a1nd" path="res://Models/Mannequin Character/characters/Mannequin_Medium.fbx" id="2_kyqiw"]
+[ext_resource type="Material" uid="uid://6xta7lifjx5s" path="res://Materials/Character_Material_blue.tres" id="2_megsn"]
 [ext_resource type="AnimationLibrary" uid="uid://ch7gklo1gbhyi" path="res://Animations/AnimationLibrary/SpecialAnimationLibrary.res" id="3_dewec"]
 [ext_resource type="AnimationLibrary" uid="uid://d20w04xqttqoc" path="res://Animations/AnimationLibrary/JogAnimationLibrary.res" id="3_gntrk"]
+[ext_resource type="Material" uid="uid://n3ly6i85fs30" path="res://Materials/Character_Material_red.tres" id="3_yoq75"]
+[ext_resource type="Material" uid="uid://bv4rlvsb5w3lt" path="res://Materials/Character_Material_green.tres" id="4_ksbbd"]
+[ext_resource type="Material" uid="uid://dpw18ty81b3th" path="res://Materials/Character_Material_yellow.tres" id="5_glx4g"]
 
 [sub_resource type="Curve" id="Curve_et12v"]
 _limits = [0.0, 5.0, 0.0, 1.0]
@@ -62,7 +66,7 @@ radius = 0.6
 height = 0.7
 radius = 1.0
 
-[node name="Player" type="CharacterBody3D" unique_id=1498653325 node_paths=PackedStringArray("animationTree", "ballDetectionArea", "rightFootCollisionArea")]
+[node name="Player" type="CharacterBody3D" unique_id=1498653325 node_paths=PackedStringArray("bodyMeshes", "animationTree", "ballDetectionArea", "rightFootCollisionArea")]
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_rpqav")
@@ -71,6 +75,11 @@ walkingSpeed = 5.0
 passShootPower = 8.0
 controlledBallDistanceToCenter = 0.5
 controlledBallY = 0.25
+bodyMeshes = [NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_Head"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_ArmLeft"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_ArmRight"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_LegLeft"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_LegRight"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_Body")]
+blueMat = ExtResource("2_megsn")
+redMat = ExtResource("3_yoq75")
+greenMat = ExtResource("4_ksbbd")
+yellowMat = ExtResource("5_glx4g")
 animationTree = NodePath("AnimationTree")
 slideTackleMovementCurve = SubResource("Curve_et12v")
 slideTackleDuration = 1.7
@@ -96,24 +105,25 @@ libraries/Special = ExtResource("3_dewec")
 
 [node name="Mannequin_Medium" parent="." unique_id=640355391 instance=ExtResource("2_kyqiw")]
 
-[node name="GeneralSkeleton" parent="Mannequin_Medium/Rig_Medium" parent_id_path=PackedInt32Array(640355391, 1559455264) index="0" unique_id=1126854210]
-bones/1/rotation = Quaternion(0.006646774, 6.893759e-05, -0.0014283437, 0.9999769)
-bones/2/rotation = Quaternion(0.112275936, -0.0002511288, 0.003515603, 0.9936708)
-bones/3/rotation = Quaternion(0.03648332, 3.5680845e-05, 0.00080443226, 0.999334)
-bones/6/rotation = Quaternion(0.03560163, 0.651828, 0.01967287, 0.7572753)
-bones/10/rotation = Quaternion(0.010781911, -0.65477926, 0.015749427, 0.7555792)
-bones/12/rotation = Quaternion(0.059281338, -0.0012018348, -0.003157724, 0.9982357)
-bones/13/rotation = Quaternion(-0.055513598, 0.21376728, 0.9744985, -0.039681908)
-bones/14/rotation = Quaternion(0.10305892, 0.7589715, -0.64276874, 0.013774821)
-bones/15/rotation = Quaternion(0.028717814, 0.683143, -0.72969353, 0.0061926823)
-bones/16/rotation = Quaternion(0.023122355, 0.8919369, 0.45050266, -0.031005014)
-bones/17/rotation = Quaternion(-0.024316601, 0.058991928, 0.9977757, -0.019298755)
-bones/18/rotation = Quaternion(0.00077252707, 0.90033734, -0.4348029, -0.018399313)
-bones/19/rotation = Quaternion(-0.017781828, 0.429222, -0.90295523, -0.011146004)
-bones/20/rotation = Quaternion(2.3049061e-08, 0.9939055, 0.110235885, 3.292723e-09)
+[node name="GeneralSkeleton" parent="Mannequin_Medium/Rig_Medium" parent_id_path=PackedInt32Array(640355391, 1498152331) index="0" unique_id=1833521253]
+bones/1/position = Vector3(-0.00073322083, 0.3991679, -0.030704478)
+bones/1/rotation = Quaternion(0.12606288, 0.054611366, 0.0013682318, 0.990517)
+bones/2/rotation = Quaternion(0.05745246, -0.032715462, -0.01967123, 0.99761814)
+bones/3/rotation = Quaternion(0.008778587, -0.011700035, 0.0015463844, 0.9998919)
+bones/6/rotation = Quaternion(0.058098786, 0.6450548, 0.10316229, 0.7549082)
+bones/10/rotation = Quaternion(0.00015040858, -0.6146178, -0.23814505, 0.7520185)
+bones/12/rotation = Quaternion(-0.16376388, -0.019109007, 0.01730633, 0.98616266)
+bones/13/rotation = Quaternion(-0.01534658, 0.10052258, 0.9939117, 0.042417478)
+bones/14/rotation = Quaternion(-0.0062459772, 0.9837637, -0.16191725, 0.0771543)
+bones/15/rotation = Quaternion(0.002302451, 0.63077253, -0.7754516, 0.028206578)
+bones/16/rotation = Quaternion(-0.0005546184, 0.9977039, 0.064825326, -0.019603722)
+bones/17/rotation = Quaternion(-0.08145596, 0.26569283, 0.9600027, -0.034161218)
+bones/18/rotation = Quaternion(0.066088945, 0.6521514, -0.7551828, -0.005457242)
+bones/19/rotation = Quaternion(0.0009383857, 0.5796998, -0.79992145, -0.15515454)
+bones/20/rotation = Quaternion(-6.834803e-08, 0.9999638, -0.008505568, 4.952439e-08)
 
 [node name="RightFootAttachment" type="BoneAttachment3D" parent="Mannequin_Medium/Rig_Medium/GeneralSkeleton" index="6" unique_id=441868245]
-transform = Transform3D(-0.9935725, -0.112711966, -0.010438345, 0.0024541225, -0.113643885, 0.9935185, -0.11316768, 0.9871074, 0.113190114, -0.15158278, 0.21115586, -0.089816116)
+transform = Transform3D(-0.9495671, -0.26949713, -0.1602933, 0.17126639, -0.8739668, 0.45480746, -0.26266038, 0.40441757, 0.8760458, -0.15554792, 0.29762125, -0.062118568)
 bone_name = "RightFoot"
 bone_idx = 19
 

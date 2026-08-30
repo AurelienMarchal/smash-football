@@ -40,6 +40,13 @@ materials/extract=0
 materials/extract_format=0
 materials/extract_path=""
 _subresources={
+"materials": {
+"Character_Material": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Models/Mannequin Character/characters/Character_Material.tres",
+"use_external/path": "uid://by2y7o5nhvbbk"
+}
+},
 "nodes": {
 "PATH:Rig_Medium/Skeleton3D": {
 "retarget/bone_map": Object(BoneMap,"resource_local_to_scene":false,"resource_name":"","profile":Object(SkeletonProfileHumanoid,"resource_local_to_scene":false,"resource_name":"","root_bone":&"Root","scale_base_bone":&"Hips","group_size":4,"bone_size":56,"script":null)

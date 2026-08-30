@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bv4rlvsb5w3lt"]
+
+[ext_resource type="Texture2D" uid="uid://chnf4opi5taq8" path="res://Models/Mannequin Character/Textures/mannequin_texture_green.png" id="1_pyhae"]
+
+[resource]
+resource_name = "Character_Material"
+vertex_color_use_as_albedo = true
+albedo_texture = ExtResource("1_pyhae")
+emission_enabled = true
