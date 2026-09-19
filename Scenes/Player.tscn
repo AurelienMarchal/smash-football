@@ -70,8 +70,7 @@ radius = 1.0
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_rpqav")
-controlledByInput = true
-walkingSpeed = 5.0
+walkingSpeed = 7.0
 passShootPower = 8.0
 controlledBallDistanceToCenter = 0.5
 controlledBallY = 0.25
@@ -106,24 +105,24 @@ libraries/Special = ExtResource("3_dewec")
 [node name="Mannequin_Medium" parent="." unique_id=640355391 instance=ExtResource("2_kyqiw")]
 
 [node name="GeneralSkeleton" parent="Mannequin_Medium/Rig_Medium" parent_id_path=PackedInt32Array(640355391, 1498152331) index="0" unique_id=1833521253]
-bones/1/position = Vector3(-0.00073322083, 0.3991679, -0.030704478)
-bones/1/rotation = Quaternion(0.12606288, 0.054611366, 0.0013682318, 0.990517)
-bones/2/rotation = Quaternion(0.05745246, -0.032715462, -0.01967123, 0.99761814)
-bones/3/rotation = Quaternion(0.008778587, -0.011700035, 0.0015463844, 0.9998919)
-bones/6/rotation = Quaternion(0.058098786, 0.6450548, 0.10316229, 0.7549082)
-bones/10/rotation = Quaternion(0.00015040858, -0.6146178, -0.23814505, 0.7520185)
-bones/12/rotation = Quaternion(-0.16376388, -0.019109007, 0.01730633, 0.98616266)
-bones/13/rotation = Quaternion(-0.01534658, 0.10052258, 0.9939117, 0.042417478)
-bones/14/rotation = Quaternion(-0.0062459772, 0.9837637, -0.16191725, 0.0771543)
-bones/15/rotation = Quaternion(0.002302451, 0.63077253, -0.7754516, 0.028206578)
-bones/16/rotation = Quaternion(-0.0005546184, 0.9977039, 0.064825326, -0.019603722)
-bones/17/rotation = Quaternion(-0.08145596, 0.26569283, 0.9600027, -0.034161218)
-bones/18/rotation = Quaternion(0.066088945, 0.6521514, -0.7551828, -0.005457242)
-bones/19/rotation = Quaternion(0.0009383857, 0.5796998, -0.79992145, -0.15515454)
-bones/20/rotation = Quaternion(-6.834803e-08, 0.9999638, -0.008505568, 4.952439e-08)
+bones/1/position = Vector3(0.0002091796, 0.4006299, -0.031168384)
+bones/1/rotation = Quaternion(0.12951042, 0.05960966, -0.0045927363, 0.98977405)
+bones/2/rotation = Quaternion(0.057996888, -0.035801135, -0.012011996, 0.9976024)
+bones/3/rotation = Quaternion(0.0065188217, -0.013492432, 0.0027574329, 0.999884)
+bones/6/rotation = Quaternion(0.050470732, 0.63834137, 0.11373694, 0.7596295)
+bones/10/rotation = Quaternion(0.005775269, -0.61199796, -0.23274404, 0.7558144)
+bones/12/rotation = Quaternion(-0.15917261, -0.015605233, 0.015992442, 0.9869979)
+bones/13/rotation = Quaternion(-0.010475117, 0.075209446, 0.99649477, 0.03510194)
+bones/14/rotation = Quaternion(-0.006717493, 0.98923755, -0.12863651, 0.06940345)
+bones/15/rotation = Quaternion(-0.0014029527, 0.64664406, -0.7622506, 0.028697804)
+bones/16/rotation = Quaternion(-0.0007272328, 0.99690825, 0.07492476, -0.023661576)
+bones/17/rotation = Quaternion(-0.077904806, 0.30265388, 0.9492075, -0.036560472)
+bones/18/rotation = Quaternion(0.07155744, 0.6668389, -0.74163926, -0.013294948)
+bones/19/rotation = Quaternion(-0.033829033, 0.6191975, -0.775368, -0.11939259)
+bones/20/rotation = Quaternion(-3.4190646e-09, 0.9998707, 0.01607994, -5.4158344e-09)
 
 [node name="RightFootAttachment" type="BoneAttachment3D" parent="Mannequin_Medium/Rig_Medium/GeneralSkeleton" index="6" unique_id=441868245]
-transform = Transform3D(-0.9495671, -0.26949713, -0.1602933, 0.17126639, -0.8739668, 0.45480746, -0.26266038, 0.40441757, 0.8760458, -0.15554792, 0.29762125, -0.062118568)
+transform = Transform3D(-0.96142715, -0.2679663, -0.062064394, 0.21006753, -0.86098343, 0.46322727, -0.1775657, 0.43232155, 0.8840637, -0.15341851, 0.28968686, -0.044962943)
 bone_name = "RightFoot"
 bone_idx = 19
 

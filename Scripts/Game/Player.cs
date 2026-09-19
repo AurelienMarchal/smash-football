@@ -4,19 +4,38 @@ using System;
 public partial class Player : CharacterBody3D
 {
 
+    
+
+    public int playerNum
+    {
+        get;
+        set;
+    }
+
+    public int teamNum
+    {
+        get;
+        set;
+    }
+
+    public TeamColor teamColor
+    {
+        get;
+        set;
+    }
+
+    public int? controlledByControllerNum
+    {
+        get;
+        set;
+    }
+
+    public Vector2 movementInput{
+        get;
+        set;
+    }
+
     [ExportGroup("General")]
-
-    [Export]
-    private int playerNum;
-
-    [Export]
-    private int teamNum;
-
-    [Export]
-    private TeamColor teamColor;
-
-    [Export]
-    public bool controlledByInput;
 
     [Export]
     private float walkingSpeed;
@@ -157,29 +176,22 @@ public partial class Player : CharacterBody3D
             }
         }
 
-        if (controlledByInput)
+        if (controlledByControllerNum != null)
         {
-            Vector2 inputVector = Input.GetVector(
-                
-                "MovePlayerLeft", 
-                "MovePlayerRight",
-                "MovePlayerDown", 
-                "MovePlayerUp"
-            );
-            if (inputVector != Vector2.Zero)
+            if (movementInput != Vector2.Zero)
             {
-                var inputVectorNormalized = inputVector.Normalized();
+                var movementInputNormalized = movementInput.Normalized();
 
                 GlobalRotation = new Vector3(
                     0f,
-                    Mathf.Atan2(inputVector.Y, inputVector.X),
+                    Mathf.Atan2(movementInput.Y, movementInput.X),
                     0f
                 );
 
                 Velocity = new Vector3(
-                    walkingSpeed * inputVectorNormalized.Y ,
+                    walkingSpeed * movementInputNormalized.Y ,
                     0f,
-                    walkingSpeed * inputVectorNormalized.X 
+                    walkingSpeed * movementInputNormalized.X 
                 );
                 
             }
@@ -217,11 +229,11 @@ public partial class Player : CharacterBody3D
         var overlappingBodies = rightFootCollisionArea.GetOverlappingBodies();
         foreach (var body in overlappingBodies)
         {
-            if(body is Player otherPlayer && otherPlayer.playerNum != playerNum) 
+            if(body is Player otherPlayer && otherPlayer.teamNum != teamNum) 
             {
                 if (otherPlayer.playerState == PlayerState.ControllingBall)
                 {
-                    GD.Print("Hit player " + otherPlayer.playerNum);
+                    GD.Print("Hit player " + otherPlayer);
                     var ball = otherPlayer.controlledBall;
                     otherPlayer.LooseControlOfBall();
                     otherPlayer.StartHitBySlideTackle();
@@ -235,30 +247,19 @@ public partial class Player : CharacterBody3D
         
     }
 
-    public override void _Input(InputEvent @event)
+    public void OnMakePassInput()
     {
-        if (!controlledByInput)
+        if(playerState == PlayerState.ControllingBall)
         {
-            return;
+            ShootControlledBall(passShootPower);
         }
-       
-        if (@event.IsActionPressed("MakePass"))
+    }
+
+    public void OnSlideTackleInput()
+    {
+        if(playerState == PlayerState.Moving)
         {
-            GD.Print("MakePass");
-            if(playerState == PlayerState.ControllingBall)
-            {
-                ShootControlledBall(passShootPower);
-            }
-            
-        }
-        if (@event.IsActionPressed("SlideTackle"))
-        {
-            if(playerState == PlayerState.Moving)
-            {
-                GD.Print("SlideTackle");
-                StartSlideTackle();
-            }
-            
+            StartSlideTackle();
         }
     }
 
@@ -269,13 +270,14 @@ public partial class Player : CharacterBody3D
             return false;
         }
 
-        var didSucceed = ball.TryToBecomeControlledByPlayer(playerNum);
+        var didSucceed = ball.TryToBecomeControlledByPlayer(playerNum, teamNum);
         if (didSucceed)
         {
             controlledBall = ball;
             SetCollisionMaskValue(3/*Ball*/, false);
             ballDetectionArea.SetCollisionMaskValue(3/*Ball*/, false);
-            playerState = PlayerState.ControllingBall;
+            //don't change player state yet if slide tackle for example
+            playerState = playerState == PlayerState.Moving ? PlayerState.ControllingBall : playerState;
         }
 
         return didSucceed;
@@ -396,4 +398,11 @@ public partial class Player : CharacterBody3D
                 break;
         }
     }
+
+
+    public override string ToString()
+    {
+        return $"[Player {playerNum} of team {teamNum}]";
+    }
+
 }

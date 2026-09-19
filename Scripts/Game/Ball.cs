@@ -13,12 +13,17 @@ public partial class Ball : RigidBody3D
 		get;
 		set;
 	}
+	public int controlledByTeam{
+		get;
+		set;
+	}
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		free = true;
 		controlledByPlayer = -1;
+		controlledByTeam = -1;
 		FreezeMode = FreezeModeEnum.Kinematic;
 		
 	}
@@ -31,7 +36,7 @@ public partial class Ball : RigidBody3D
 		
 	}
 
-	public bool TryToBecomeControlledByPlayer(int playerNum)
+	public bool TryToBecomeControlledByPlayer(int playerNum, int teamNum)
 	{	
 		if(controlledByPlayer >= 0)
 		{
@@ -39,9 +44,10 @@ public partial class Ball : RigidBody3D
 		}
 		free = false;
 		controlledByPlayer = playerNum;
+		controlledByTeam = teamNum;
 		Freeze = true;
 
-		GD.Print($"Ball Controlled by player {playerNum}");
+		GD.Print($"Ball Controlled by [Player {playerNum} of team {teamNum}]");
 
 		return true;
 	}
