@@ -18,22 +18,51 @@ public partial class Player : CharacterBody3D
         set;
     }
 
+    private TeamColor teamColor_;
+
     public TeamColor teamColor
     {
-        get;
-        set;
+        get
+        {
+            return teamColor_;
+        }
+        set
+        {
+            teamColor_ = value;
+            SetMaterialAccordingToTeamColor();
+        }
     }
+
+    private int? controlledByControllerNum_;
 
     public int? controlledByControllerNum
     {
-        get;
-        set;
+        get
+        {
+            return controlledByControllerNum_;
+        }
+        set
+        {
+            controlledByControllerNum_ = value;
+            if(value == null)
+            {
+                controlledByControllerLabel3D.Hide();
+            }
+            else
+            {
+                controlledByControllerLabel3D.Text = $"P{value + 1}";
+                controlledByControllerLabel3D.Show();
+            }
+        }
     }
 
     public Vector2 movementInput{
         get;
         set;
     }
+
+    [Signal]
+    public delegate void GainControlOfBallEventHandler(int playerNum, int teamNum);
 
     [ExportGroup("General")]
 
@@ -49,9 +78,15 @@ public partial class Player : CharacterBody3D
     [Export]
     private float controlledBallY;
 
+    [Export(PropertyHint.Range, "1,90,0.1")]
+    private float passCandidateMaxAngle;
+
     [ExportGroup("Rendering")]
     [Export]
     MeshInstance3D[] bodyMeshes;
+
+    [Export]
+    Label3D controlledByControllerLabel3D;
 
     [ExportSubgroup("Materials")]
     [Export]
@@ -93,6 +128,9 @@ public partial class Player : CharacterBody3D
     Area3D ballDetectionArea;
 
     [Export]
+    Area3D passCandidateDetectionArea;
+
+    [Export]
     Area3D rightFootCollisionArea;
 
     public Ball controlledBall{
@@ -106,8 +144,7 @@ public partial class Player : CharacterBody3D
         playerState = PlayerState.Moving;
         stateMachinePlayback = (AnimationNodeStateMachinePlayback)animationTree.Get("parameters/playback");
         timerBeforeAbleToControlBall = GetNode<Timer>("./TimerBeforeAbleToControlBall");
-        SetMaterialAccordingToTeamColor();
-
+        
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -130,8 +167,15 @@ public partial class Player : CharacterBody3D
 
 	}
 
+    public override void _Process(double delta)
+    {
+        
+    }
+
+
     public void SetMaterialAccordingToTeamColor()
     {
+        
         Material mat = null;
         switch (teamColor)
         {
@@ -153,6 +197,7 @@ public partial class Player : CharacterBody3D
         {
             return;
         }
+        GD.Print($"Setting Material {mat} for {this}");
         foreach (MeshInstance3D mesh in bodyMeshes)
         {
             
@@ -202,7 +247,7 @@ public partial class Player : CharacterBody3D
         }
         else
         {
-            
+            Velocity = Vector3.Zero;
         }
 
         MoveAndSlide();
@@ -251,7 +296,18 @@ public partial class Player : CharacterBody3D
     {
         if(playerState == PlayerState.ControllingBall)
         {
-            ShootControlledBall(passShootPower);
+            var bestCandidate = GetBestPassCandidate();
+            
+            if(bestCandidate != null)
+            {
+                Vector3 dir = bestCandidate.GlobalPosition - GlobalPosition;
+                var angle =  Mathf.Atan2(dir.X, dir.Z);
+                ShootControlledBall(passShootPower, angle);
+            }
+            else
+            {
+                ShootControlledBall(passShootPower);
+            }
         }
     }
 
@@ -278,6 +334,7 @@ public partial class Player : CharacterBody3D
             ballDetectionArea.SetCollisionMaskValue(3/*Ball*/, false);
             //don't change player state yet if slide tackle for example
             playerState = playerState == PlayerState.Moving ? PlayerState.ControllingBall : playerState;
+            EmitSignal(SignalName.GainControlOfBall, playerNum, teamNum);
         }
 
         return didSucceed;
@@ -318,8 +375,43 @@ public partial class Player : CharacterBody3D
                 controlledBallDistanceToCenter * Mathf.Cos(GlobalRotation.Y)
             );
     }
+    
+    #nullable enable
+    public Player? GetBestPassCandidate()
+    {
+        float minDistance = float.MaxValue;
+       
+        Player? bestCandidate = null;
+        var overlappingBodies = passCandidateDetectionArea.GetOverlappingBodies();
+        foreach (var body in overlappingBodies)
+        {
+            if(body is Player otherPlayer && otherPlayer.teamNum == teamNum && otherPlayer.playerNum != playerNum) 
+            {
+                Vector3 othePlayerLocalPosition = ToLocal(otherPlayer.GlobalPosition);
+                float otherPlayerAngle = Mathf.Atan2(othePlayerLocalPosition.X, othePlayerLocalPosition.Z); 
+                if(Mathf.Abs(otherPlayerAngle) > (passCandidateMaxAngle * Mathf.Pi /180f))
+                {
+                    continue;
+                }
+                float otherPlayerDistance = GlobalPosition.DistanceTo(otherPlayer.GlobalPosition);
+                if(otherPlayerDistance < minDistance)
+                {
+                    minDistance = otherPlayerDistance;
+                    bestCandidate = otherPlayer;
+                }
+            }
+        }
+
+        return bestCandidate;
+    }
+    #nullable disable
 
     public void ShootControlledBall(float power)
+    {
+        ShootControlledBall(power, GlobalRotation.Y);
+    }
+
+    public void ShootControlledBall(float power, float angleRad)
     {
         if(controlledBall == null)
         {
@@ -332,16 +424,20 @@ public partial class Player : CharacterBody3D
         }
 
         var impulse = new Vector3(
-            power * Mathf.Sin(GlobalRotation.Y), 
+            power * Mathf.Sin(angleRad), 
             0f, 
-            power * Mathf.Cos(GlobalRotation.Y)
+            power * Mathf.Cos(angleRad)
         );
 
         GD.Print($"Shooting with impulse {impulse}");
 
         controlledBall.BecomeFree();
+
+        
         
         timerBeforeAbleToControlBall.Start();
+
+        controlledBall.LinearVelocity = Vector3.Zero;
 
         controlledBall.ApplyCentralImpulse(impulse);
 

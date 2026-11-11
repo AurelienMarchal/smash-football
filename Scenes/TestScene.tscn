@@ -313,11 +313,11 @@ shape = SubResource("BoxShape3D_efkb7")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 10, -20)
 shape = SubResource("BoxShape3D_a2at2")
 
-[node name="Wall_8_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=1319260254]
+[node name="Wall_8_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=1471039591]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 12, 20)
 shape = SubResource("BoxShape3D_c264a")
 
-[node name="Wall_26_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=2072143379]
+[node name="Wall_26_AboveHole" type="CollisionShape3D" parent="FieldGenerator/Collisions" unique_id=108132987]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12, -20)
 shape = SubResource("BoxShape3D_6xh1p")
 
@@ -336,14 +336,19 @@ transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0)
 
 [node name="PlayersController" type="Node3D" parent="." unique_id=378418302 node_paths=PackedStringArray("playersTeam1", "playersTeam2")]
 script = ExtResource("4_0f5h7")
-playersTeam1 = [NodePath("../Player0_Team1")]
+playersTeam1 = [NodePath("../Player0_Team1"), NodePath("../Player1_Team1"), NodePath("../Player2_Team1")]
 playersTeam2 = [NodePath("../Player0_Team2")]
+colorTeam1 = 2
 colorTeam2 = 1
-controllersNumsTeam2 = PackedInt32Array(0)
+controllersNumsTeam1 = PackedInt32Array(0)
 
 [node name="Player0_Team1" parent="." unique_id=1498653325 instance=ExtResource("3_8k7wh")]
-walkingSpeed = 7.0
+
+[node name="Player1_Team1" parent="." unique_id=2036188559 instance=ExtResource("3_8k7wh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.028486, 0, 0)
+
+[node name="Player2_Team1" parent="." unique_id=1328133562 instance=ExtResource("3_8k7wh")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.6804395, 0, 0)
 
 [node name="Player0_Team2" parent="." unique_id=46902860 instance=ExtResource("3_8k7wh")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10)
-walkingSpeed = 7.0

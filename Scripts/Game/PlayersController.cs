@@ -28,9 +28,11 @@ public partial class PlayersController : Node
         for (int i = 0; i < playersTeam1.Length; i++)
         {
             var player = playersTeam1[i];
-            player.teamColor = colorTeam1;
+            
             player.teamNum = 1;
             player.playerNum = i;
+            player.teamColor = colorTeam1;
+            player.GainControlOfBall += OnPlayerGainControlOfBall;
             if(controllersNumsTeam1 != null && i < controllersNumsTeam1.Length)
             {
                 player.controlledByControllerNum = controllersNumsTeam1[i];
@@ -39,14 +41,17 @@ public partial class PlayersController : Node
             {
                 player.controlledByControllerNum = null;
             }
+
         }
 
         for (int i = 0; i < playersTeam2.Length; i++)
         {
             var player = playersTeam2[i];
-            player.teamColor = colorTeam2;
+            
             player.teamNum = 2;
             player.playerNum = i;
+            player.teamColor = colorTeam2;
+            player.GainControlOfBall += OnPlayerGainControlOfBall;
             if(controllersNumsTeam2 != null && i < controllersNumsTeam2.Length)
             {
                 player.controlledByControllerNum = controllersNumsTeam2[i];
@@ -57,7 +62,6 @@ public partial class PlayersController : Node
             }
         }
 	}
-
 
     public override void _PhysicsProcess(double delta)
     {
@@ -104,6 +108,31 @@ public partial class PlayersController : Node
     }
 
     #nullable enable
+
+    public Player? GetPlayer(int playerNum, int teamNum)
+    {
+        
+        switch (teamNum)
+        {
+            case 1 : 
+                if(playerNum > playersTeam1.Length || playerNum < 0)
+                {
+                    return null;
+                }
+                return playersTeam1[playerNum];
+            case 2 : 
+                if(playerNum > playersTeam2.Length || playerNum < 0)
+                {
+                    return null;
+                }
+                return playersTeam2[playerNum];
+            
+            default:
+                return null;
+        }
+    }
+
+
     //Can be optimized by having a variable keeping track of player <-> controllerNum relationship
     public Player? GetPlayerControlledByController(int controllerNum)
     {
@@ -147,5 +176,41 @@ public partial class PlayersController : Node
         }
         return null;
     }
+
+    
+    public void ChangePlayerControlledByController(int controllerNum, Player newPlayerControlled, Player? formerPlayerControlled)
+    {
+        if(formerPlayerControlled != null){
+            formerPlayerControlled.controlledByControllerNum = null;
+            formerPlayerControlled.movementInput = Vector2.Zero;
+        }
+        
+        newPlayerControlled.controlledByControllerNum = controllerNum;
+    }
     #nullable disable
+
+    private void OnPlayerGainControlOfBall(int playerNum, int teamNum)
+    {   
+        
+        if(controllersNumsTeam1.Length == 0)
+        {
+            return;
+        }
+
+        Player player = GetPlayer(playerNum, teamNum);
+        if(player == null)
+        {
+            return;
+        }
+
+        //temp. In the future, cycle between controller nums
+        var controllerNum = controllersNumsTeam1[0];
+
+        var formerPlayerControlled = GetPlayerControlledByController(controllerNum);
+
+        if(formerPlayerControlled.teamNum == player.teamNum)
+        {
+            ChangePlayerControlledByController(controllerNum, player, formerPlayerControlled);
+        }
+    }
 }

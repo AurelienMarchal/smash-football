@@ -66,15 +66,21 @@ radius = 0.6
 height = 0.7
 radius = 1.0
 
-[node name="Player" type="CharacterBody3D" unique_id=1498653325 node_paths=PackedStringArray("bodyMeshes", "animationTree", "ballDetectionArea", "rightFootCollisionArea")]
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_megsn"]
+height = 0.7
+radius = 10.0
+
+[node name="Player" type="CharacterBody3D" unique_id=1498653325 node_paths=PackedStringArray("bodyMeshes", "controlledByControllerLabel3D", "animationTree", "ballDetectionArea", "passCandidateDetectionArea", "rightFootCollisionArea")]
 collision_layer = 2
 collision_mask = 7
 script = ExtResource("1_rpqav")
 walkingSpeed = 7.0
-passShootPower = 8.0
+passShootPower = 15.0
 controlledBallDistanceToCenter = 0.5
 controlledBallY = 0.25
+passCandidateMaxAngle = 60.0
 bodyMeshes = [NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_Head"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_ArmLeft"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_ArmRight"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_LegLeft"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_LegRight"), NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/Mannequin_Medium_Body")]
+controlledByControllerLabel3D = NodePath("ControlledByControllerLabel3D")
 blueMat = ExtResource("2_megsn")
 redMat = ExtResource("3_yoq75")
 greenMat = ExtResource("4_ksbbd")
@@ -83,6 +89,7 @@ animationTree = NodePath("AnimationTree")
 slideTackleMovementCurve = SubResource("Curve_et12v")
 slideTackleDuration = 1.7
 ballDetectionArea = NodePath("BallDetectionArea")
+passCandidateDetectionArea = NodePath("PassCandidateDetectionArea")
 rightFootCollisionArea = NodePath("Mannequin_Medium/Rig_Medium/GeneralSkeleton/RightFootAttachment/RightFootCollisionArea")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1097291754]
@@ -105,24 +112,24 @@ libraries/Special = ExtResource("3_dewec")
 [node name="Mannequin_Medium" parent="." unique_id=640355391 instance=ExtResource("2_kyqiw")]
 
 [node name="GeneralSkeleton" parent="Mannequin_Medium/Rig_Medium" parent_id_path=PackedInt32Array(640355391, 1498152331) index="0" unique_id=1833521253]
-bones/1/position = Vector3(0.0002091796, 0.4006299, -0.031168384)
-bones/1/rotation = Quaternion(0.12951042, 0.05960966, -0.0045927363, 0.98977405)
-bones/2/rotation = Quaternion(0.057996888, -0.035801135, -0.012011996, 0.9976024)
-bones/3/rotation = Quaternion(0.0065188217, -0.013492432, 0.0027574329, 0.999884)
-bones/6/rotation = Quaternion(0.050470732, 0.63834137, 0.11373694, 0.7596295)
-bones/10/rotation = Quaternion(0.005775269, -0.61199796, -0.23274404, 0.7558144)
-bones/12/rotation = Quaternion(-0.15917261, -0.015605233, 0.015992442, 0.9869979)
-bones/13/rotation = Quaternion(-0.010475117, 0.075209446, 0.99649477, 0.03510194)
-bones/14/rotation = Quaternion(-0.006717493, 0.98923755, -0.12863651, 0.06940345)
-bones/15/rotation = Quaternion(-0.0014029527, 0.64664406, -0.7622506, 0.028697804)
-bones/16/rotation = Quaternion(-0.0007272328, 0.99690825, 0.07492476, -0.023661576)
-bones/17/rotation = Quaternion(-0.077904806, 0.30265388, 0.9492075, -0.036560472)
-bones/18/rotation = Quaternion(0.07155744, 0.6668389, -0.74163926, -0.013294948)
-bones/19/rotation = Quaternion(-0.033829033, 0.6191975, -0.775368, -0.11939259)
-bones/20/rotation = Quaternion(-3.4190646e-09, 0.9998707, 0.01607994, -5.4158344e-09)
+bones/1/position = Vector3(0.0032971823, 0.41061065, -0.020742016)
+bones/1/rotation = Quaternion(0.13994649, 0.0611915, -0.024772333, 0.987956)
+bones/2/rotation = Quaternion(0.0365118, -0.058177937, 0.040161856, 0.9968296)
+bones/3/rotation = Quaternion(-0.0020972812, -0.027123537, 0.013999607, 0.9995319)
+bones/6/rotation = Quaternion(-0.025900004, 0.61535555, 0.20682873, 0.76018983)
+bones/10/rotation = Quaternion(0.041327093, -0.6163812, -0.19097985, 0.76281905)
+bones/12/rotation = Quaternion(-0.10939179, 0.022176405, -0.017051147, 0.993605)
+bones/13/rotation = Quaternion(0.082034536, -0.1388375, 0.9864811, -0.029151177)
+bones/14/rotation = Quaternion(-0.02781958, 0.9924228, -0.109952115, 0.04726118)
+bones/15/rotation = Quaternion(-0.046743724, 0.7974388, -0.59910357, 0.054602556)
+bones/16/rotation = Quaternion(2.9402747e-08, 0.9998946, 0.014523459, -4.3308507e-08)
+bones/17/rotation = Quaternion(-0.028400859, 0.41437003, 0.9092989, -0.025814159)
+bones/18/rotation = Quaternion(0.051269673, 0.9840861, -0.14531799, -0.08848028)
+bones/19/rotation = Quaternion(0.062779754, 0.7882504, -0.6020413, -0.11075333)
+bones/20/rotation = Quaternion(-4.7782642e-08, 0.99985194, 0.017208586, 1.6172505e-08)
 
 [node name="RightFootAttachment" type="BoneAttachment3D" parent="Mannequin_Medium/Rig_Medium/GeneralSkeleton" index="6" unique_id=441868245]
-transform = Transform3D(-0.96142715, -0.2679663, -0.062064394, 0.21006753, -0.86098343, 0.46322727, -0.1775657, 0.43232155, 0.8840637, -0.15341851, 0.28968686, -0.044962943)
+transform = Transform3D(-0.9544615, -0.15814023, -0.25297254, -0.2568466, 0.004215598, 0.96644306, -0.15176713, 0.9874076, -0.04464136, -0.14409782, 0.18981686, 0.175287)
 bone_name = "RightFoot"
 bone_idx = 19
 
@@ -141,12 +148,31 @@ collision_mask = 4
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
 shape = SubResource("CylinderShape3D_bbgfi")
 
+[node name="PassCandidateDetectionArea" type="Area3D" parent="." unique_id=902183351]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="PassCandidateDetectionArea" unique_id=1326568224]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.35, 0)
+shape = SubResource("CylinderShape3D_megsn")
+debug_fill = false
+
 [node name="TimerBeforeAbleToControlBall" type="Timer" parent="." unique_id=566171083]
 wait_time = 0.3
 one_shot = true
 
+[node name="ControlledByControllerLabel3D" type="Label3D" parent="." unique_id=294779470]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.859569, 0)
+visible = false
+pixel_size = 0.01
+billboard = 1
+modulate = Color(1, 1, 0.2901961, 1)
+text = "P1"
+font_size = 64
+
 [connection signal="animation_finished" from="AnimationTree" to="." method="OnAnimationTreeAnimationFinished"]
 [connection signal="body_entered" from="BallDetectionArea" to="." method="OnBallDetectionAreaBodyEntered"]
+[connection signal="body_entered" from="PassCandidateDetectionArea" to="." method="OnBallDetectionAreaBodyEntered"]
 [connection signal="timeout" from="TimerBeforeAbleToControlBall" to="." method="OnTimerBeforeAbleToControlBallTimeout"]
 
 [editable path="Mannequin_Medium"]
